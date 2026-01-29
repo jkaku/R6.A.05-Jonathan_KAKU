@@ -1,4 +1,10 @@
 package org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.dao;
+import java.util.List;
 
-public class DAO {
+public abstract class DAO<T> {
+    public abstract boolean create(T obj);
+    public abstract boolean delete(int id);
+    public abstract boolean update(T obj);
+    public abstract T find(int id);
+    public abstract List<T> findAll();
 }

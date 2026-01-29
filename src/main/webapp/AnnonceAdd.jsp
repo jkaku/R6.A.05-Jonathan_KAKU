@@ -1,16 +1,15 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: jkaku
-  Date: 29/01/2026
-  Time: 15:17
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<form method="post" action="AnnonceAdd">
+    Titre : <label>
+    <input type="text" name="title" required>
+</label><br>
+    Description : <label>
+    <textarea name="description" required></textarea>
+</label><br>
+    Adresse : <label>
+    <input type="text" name="adress" required>
+</label><br>
+    Mail : <label>
+    <input type="email" name="mail" required>
+</label><br>
+    <button type="submit">Enregistrer</button>
+</form>
