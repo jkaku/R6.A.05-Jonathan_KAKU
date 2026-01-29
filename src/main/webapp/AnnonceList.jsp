@@ -41,7 +41,6 @@
                     <td>${a.mail}</td>
                     <td>${a.date}</td>
                     <td>
-                            <%-- Liens vers les servlets Update et Delete avec l'ID en paramètre --%>
                         <a href="AnnonceUpdate?id=${a.id}" class="btn-edit">Modifier</a>
                         <a href="AnnonceDelete?id=${a.id}" class="btn-delete"
                            onclick="return confirm('Voulez-vous vraiment supprimer cette annonce ?');">
