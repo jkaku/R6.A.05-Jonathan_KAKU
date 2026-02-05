@@ -1,6 +1,10 @@
 package org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance;
 
 import org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.models.Annonce;
+import org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.models.Category;
+import org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.models.Status;
+import org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.models.User;
+import org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.repositories.CategoryRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,27 +15,28 @@ import java.io.IOException;
 
 @WebServlet("/AnnonceAdd")
 public class AnnonceAdd extends HttpServlet {
+    private AnnonceService annonceService = new AnnonceService();
+    private CategoryRepository catRepo = new CategoryRepository();
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("categories", catRepo.findAll());
         this.getServletContext().getRequestDispatcher("/AnnonceAdd.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String title = request.getParameter("title");
-        String desc = request.getParameter("description");
-        String addr = request.getParameter("adress");
-        String mail = request.getParameter("mail");
+        User currentUser = (User) request.getSession().getAttribute("user");
+        Annonce a = new Annonce();
+        a.setTitle(request.getParameter("title"));
+        a.setDescription(request.getParameter("description"));
+        a.setAdress(request.getParameter("adress"));
+        a.setMail(request.getParameter("mail"));
+        a.setStatus(Status.DRAFT);
+        a.setAuthor(currentUser);
+        Long catId = Long.parseLong(request.getParameter("categoryId"));
+        Category cat = catRepo.findById(catId);
+        a.setCategory(cat);
+        annonceService.createAnnonce(a);
 
-        if (title != null && desc != null && addr != null && mail != null) {
-            try {
-                Annonce a = new Annonce();
-                a.setTitle(title);
-                a.setDescription(desc);
-                a.setAdress(addr);
-                a.setMail(mail);
-
-                new AnnonceDAO().create(a);
-                response.sendRedirect("AnnonceList"); // On redirige vers la liste
-            } catch (Exception e) { e.printStackTrace(); }
-        }
+        response.sendRedirect("AnnonceList");
     }
 }

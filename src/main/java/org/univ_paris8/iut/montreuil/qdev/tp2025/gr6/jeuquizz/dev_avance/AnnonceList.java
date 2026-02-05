@@ -9,17 +9,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "AnnonceList", value = "/AnnonceList")
+@WebServlet("/AnnonceList")
 public class AnnonceList extends HttpServlet {
-
+    private AnnonceService service = new AnnonceService();
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            AnnonceDAO dao = new AnnonceDAO();
-            List<Annonce> listeAnnonces = dao.findAll();
-            request.setAttribute("annonces", listeAnnonces);
-            this.getServletContext().getRequestDispatcher("/AnnonceList.jsp").forward(request, response);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        int page = 1;
+        int size = 5;
+        if(request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
         }
+        List<Annonce> list = service.getAnnoncesByPage(page, size);
+        request.setAttribute("annonces", list);
+        request.setAttribute("currentPage", page);
+        this.getServletContext().getRequestDispatcher("/AnnonceList.jsp").forward(request, response);
     }
 }

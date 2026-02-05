@@ -36,19 +36,24 @@
             <tbody>
             <c:forEach items="${annonces}" var="a">
                 <tr>
-                    <td><strong>${a.title}</strong></td>
-                    <td>${a.adress}</td>
-                    <td>${a.mail}</td>
-                    <td>${a.date}</td>
+                    <td>${a.title} <strong>(${a.status})</strong></td>
                     <td>
-                        <a href="AnnonceUpdate?id=${a.id}" class="btn-edit">Modifier</a>
-                        <a href="AnnonceDelete?id=${a.id}" class="btn-delete"
-                           onclick="return confirm('Voulez-vous vraiment supprimer cette annonce ?');">
-                            Supprimer
-                        </a>
+                        <c:if test="${a.status == 'DRAFT'}">
+                            <a href="AnnonceAction?action=publish&id=${a.id}">Publier</a>
+                        </c:if>
+                        <c:if test="${a.status == 'PUBLISHED'}">
+                            <a href="AnnonceAction?action=archive&id=${a.id}">Archiver</a>
+                        </c:if>
+                        <a href="AnnonceUpdate?id=${a.id}">Modifier</a>
                     </td>
                 </tr>
             </c:forEach>
+
+            <div>
+                <a href="AnnonceList?page=${currentPage - 1}">Précédent</a>
+                <span>Page ${currentPage}</span>
+                <a href="AnnonceList?page=${currentPage + 1}">Suivant</a>
+            </div>
             </tbody>
         </table>
     </c:when>
