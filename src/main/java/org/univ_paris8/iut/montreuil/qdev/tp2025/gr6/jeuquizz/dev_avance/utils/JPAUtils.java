@@ -10,6 +10,7 @@ public class JPAUtils {
     static {
         try {
             factory = Persistence.createEntityManagerFactory("MasterAnnoncePU");
+            System.out.println(factory);
         } catch (Exception e) {
             e.printStackTrace();
         }

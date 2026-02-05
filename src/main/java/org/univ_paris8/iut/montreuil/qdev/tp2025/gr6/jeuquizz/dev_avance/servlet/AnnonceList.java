@@ -1,5 +1,6 @@
-package org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance;
+package org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.servlet;
 
+import org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.AnnonceService;
 import org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.models.Annonce;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
