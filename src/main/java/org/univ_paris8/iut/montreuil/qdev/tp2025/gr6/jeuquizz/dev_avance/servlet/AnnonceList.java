@@ -13,15 +13,22 @@ import java.util.List;
 @WebServlet("/AnnonceList")
 public class AnnonceList extends HttpServlet {
     private AnnonceService service = new AnnonceService();
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int page = 1;
         int size = 5;
-        if(request.getParameter("page") != null) {
-            page = Integer.parseInt(request.getParameter("page"));
+        try {
+            String pageParam = request.getParameter("page");
+            if (pageParam != null) {
+                page = Math.max(1, Integer.parseInt(pageParam));
+            }
+        } catch (NumberFormatException e) {
+            page = 1;
         }
         List<Annonce> list = service.getAnnoncesByPage(page, size);
         request.setAttribute("annonces", list);
         request.setAttribute("currentPage", page);
+        request.setAttribute("hasNext", list.size() == size);
         this.getServletContext().getRequestDispatcher("/AnnonceList.jsp").forward(request, response);
     }
 }

@@ -14,20 +14,25 @@ import java.io.IOException;
 public class Login extends HttpServlet {
     private UserRepository userRepo = new UserRepository();
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        this.getServletContext().getRequestDispatcher("/Login.jsp").forward(request, response);
+        this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String user = request.getParameter("username");
         String pass = request.getParameter("password");
+
         User u = userRepo.findByUsername(user);
+
         if (u != null && u.getPassword().equals(pass)) {
             request.getSession().setAttribute("user", u);
             response.sendRedirect("AnnonceList");
         } else {
-            request.setAttribute("error", "Identifiants incorrects");
-            doGet(request, response);
+            request.setAttribute("error", "Identifiants incorrects ou utilisateur inexistant.");
+            request.setAttribute("lastUsername", user);
+            this.getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
         }
     }
 }
