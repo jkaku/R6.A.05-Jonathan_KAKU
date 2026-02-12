@@ -1,11 +1,12 @@
 package org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.repositories;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.hibernate.engine.spi.Status;
 import org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.models.Annonce;
 import org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.utils.JPAUtils;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
+
 import java.util.List;
 
 public class AnnonceRepository {

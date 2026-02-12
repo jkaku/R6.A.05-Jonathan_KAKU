@@ -4,10 +4,10 @@ import org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.Annonce
 import org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.models.*;
 import org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.repositories.CategoryRepository;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
-import javax.validation.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+import jakarta.validation.*;
 import java.io.IOException;
 import java.util.*;
 

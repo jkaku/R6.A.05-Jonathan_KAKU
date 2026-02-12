@@ -1,7 +1,7 @@
 package org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.models;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
