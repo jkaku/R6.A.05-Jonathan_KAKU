@@ -15,8 +15,6 @@ public class AnnonceRepository {
         return manager.createQuery("SELECT a FROM Annonce a ORDER BY a.date DESC", Annonce.class)
                 .getResultList();
     }
-
-    // Version paginée [cite: 426]
     public List<Annonce> findAllPaginated(EntityManager manager, int page, int limit) {
         int offset = (Math.max(page, 1) - 1) * limit;
         TypedQuery<Annonce> q = manager.createQuery("SELECT a FROM Annonce a ORDER BY a.date DESC", Annonce.class);
@@ -28,11 +26,9 @@ public class AnnonceRepository {
     public void save(EntityManager manager, Annonce item) {
         manager.persist(item); // "create" renommé en "save"
     }
-
     public Annonce update(EntityManager manager, Annonce item) {
         return manager.merge(item);
     }
-
     public void delete(EntityManager manager, Annonce item) {
         manager.remove(item);
     }

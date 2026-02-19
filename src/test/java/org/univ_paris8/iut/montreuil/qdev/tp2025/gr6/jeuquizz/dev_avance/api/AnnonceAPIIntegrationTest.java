@@ -16,26 +16,18 @@ public class AnnonceAPIIntegrationTest extends JerseyTest {
 
     @Override
     protected Application configure() {
-        // On configure un mini-serveur avec juste notre Controller
         return new ResourceConfig(AnnonceResource.class);
     }
 
     @Test
     void testGetAnnonces_ShouldReturn200() {
-        // Simulation d'un appel GET /annonces
         Response response = target("/annonces").request().get();
-
         assertEquals(200, response.getStatus());
-
-        // On peut vérifier le contenu si la base H2 est connectée derrière
-        // (En intégration pure API, on mockerait le Service, mais ici on teste tout)
     }
 
     @Test
     void testGetUnknown_ShouldReturn404() {
-        // ID 9999 n'existe pas
         Response response = target("/annonces/9999").request().get();
-
         assertEquals(404, response.getStatus());
     }
 }

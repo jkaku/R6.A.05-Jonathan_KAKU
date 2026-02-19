@@ -36,19 +36,14 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         String token = authHeader.substring("Bearer ".length()).trim();
 
         try {
-            // JAAS TOKEN VALIDATION [cite: 194]
             LoginContext lc = new LoginContext("MasterAnnonceToken", callbacks -> {
                 for (var cb : callbacks) {
                     if (cb instanceof NameCallback) ((NameCallback) cb).setName(token);
                 }
             });
-            lc.login(); // Déclenche TokenLoginModule
-
-            // Récupérer le Subject peuplé
+            lc.login();
             Subject subject = lc.getSubject();
             Principal principal = subject.getPrincipals(UserPrincipal.class).iterator().next();
-
-            // Injecter dans le contexte JAX-RS
             requestContext.setSecurityContext(new SecurityContext() {
                 @Override public Principal getUserPrincipal() { return principal; }
                 @Override public boolean isUserInRole(String role) { return true; }

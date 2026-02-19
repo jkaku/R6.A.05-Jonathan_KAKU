@@ -18,7 +18,6 @@ public class AnnonceService {
 
     private final AnnonceRepository repo;
     private final UserRepository userRepo;
-
     public AnnonceService() {
         this.repo = new AnnonceRepository();
         this.userRepo = new UserRepository();
@@ -42,17 +41,12 @@ public class AnnonceService {
         }
     }
 
-    // MODIFICATION ICI : Ajout du paramètre categoryId
     public void addAnnonce(Annonce annonce, String username, Long categoryId) {
         EntityManager manager = JPAProvider.getEntityManager();
         try {
             manager.getTransaction().begin();
-
-            // 1. Récupérer l'auteur
             User author = userRepo.findByUsername(username);
             if (author == null) throw new ForbiddenException("Utilisateur inconnu");
-
-            // 2. Récupérer la catégorie si l'ID est fourni
             if (categoryId != null) {
                 Category cat = manager.find(Category.class, categoryId);
                 if (cat == null) {
@@ -60,16 +54,11 @@ public class AnnonceService {
                 }
                 annonce.setCategory(cat);
             }
-
-            // 3. Initialiser les champs par défaut
             annonce.setAuthor(author);
             annonce.setDate(new Timestamp(System.currentTimeMillis()));
             if (annonce.getStatus() == null) annonce.setStatus(Status.DRAFT);
-
-            // 4. Sauvegarder
             repo.save(manager, annonce);
             manager.getTransaction().commit();
-
         } catch (Exception e) {
             if (manager.getTransaction().isActive()) manager.getTransaction().rollback();
             throw e;
@@ -83,25 +72,16 @@ public class AnnonceService {
         try {
             manager.getTransaction().begin();
             Annonce existing = repo.findById(manager, id);
-
             if (existing == null) throw new NotFoundException("Annonce introuvable");
-
-            // Règle 1: Seul l'auteur peut modifier
             if (!existing.getAuthor().getUsername().equals(username)) {
                 throw new ForbiddenException("Vous n'êtes pas l'auteur de cette annonce");
             }
-
-            // Règle 2: Une annonce PUBLISHED ne peut pas être modifiée
             if (existing.getStatus() == Status.PUBLISHED) {
                 throw new ForbiddenException("Impossible de modifier une annonce publiée");
             }
-
-            // Mise à jour des champs
             existing.setTitle(updates.getTitle());
             existing.setDescription(updates.getDescription());
             existing.setAdress(updates.getAdress());
-            // Note: Pour changer la catégorie lors de l'update, il faudrait aussi passer categoryId ici
-
             repo.update(manager, existing);
             manager.getTransaction().commit();
         } finally {
@@ -114,20 +94,13 @@ public class AnnonceService {
         try {
             manager.getTransaction().begin();
             Annonce existing = repo.findById(manager, id);
-
             if (existing == null) throw new NotFoundException("Annonce introuvable");
-
-            // Règle: Auteur uniquement
             if (!existing.getAuthor().getUsername().equals(username)) {
                 throw new ForbiddenException("Action non autorisée");
             }
-
-            // Règle 3: Vérification si archivée (si contrainte stricte)
             if (existing.getStatus() != Status.ARCHIVED) {
-                // Pour le TP, tu peux choisir de throw une erreur ou d'archiver ici.
-                // throw new ForbiddenException("L'annonce doit être archivée avant suppression");
-            }
 
+            }
             repo.delete(manager, existing);
             manager.getTransaction().commit();
         } finally {

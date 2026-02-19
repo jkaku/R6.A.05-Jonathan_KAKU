@@ -24,9 +24,7 @@ public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
                     .type(MediaType.APPLICATION_JSON)
                     .build();
         }
-
-        // Erreur interne par défaut (500)
-        exception.printStackTrace(); // Utile pour les logs
+        exception.printStackTrace();
         errorResponse.put("error", "INTERNAL SERVER ERROR");
         errorResponse.put("details", exception.getMessage());
 

@@ -13,5 +13,5 @@ import io.swagger.v3.oas.annotations.servers.Server;
         servers = @Server(url = "/dev_avance")
 )
 public class OpenApiConfig {
-    // Juste pour l'annotation
+
 }

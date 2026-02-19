@@ -19,7 +19,6 @@ class AnnonceDAOIntegrationTest {
 
     @BeforeAll
     static void setupFactory() {
-        // On charge l'unité de test définie ci-dessus
         emf = Persistence.createEntityManagerFactory("dev_avance_test");
     }
 
@@ -41,29 +40,22 @@ class AnnonceDAOIntegrationTest {
 
     @Test
     void testCreateAndFind() {
-        // GIVEN
         em.getTransaction().begin();
         Annonce a = new Annonce();
         a.setTitle("Vélo Rouge");
         a.setDescription("Un beau vélo");
         a.setAdress("Paris");
         a.setMail("test@test.com");
-
-        // WHEN
         dao.save(em, a);
         em.getTransaction().commit();
-
-        // THEN
         assertNotNull(a.getId());
-
-        em.clear(); // On vide le cache pour forcer une vraie requête SELECT
+        em.clear();
         Annonce found = dao.findById(em, a.getId());
         assertEquals("Vélo Rouge", found.getTitle());
     }
 
     @Test
     void testPagination() {
-        // GIVEN: On insère 15 annonces
         em.getTransaction().begin();
         for (int i = 0; i < 15; i++) {
             Annonce a = new Annonce();
@@ -74,11 +66,7 @@ class AnnonceDAOIntegrationTest {
             dao.save(em, a);
         }
         em.getTransaction().commit();
-
-        // WHEN: On demande la page 1 (taille 10)
         List<Annonce> page1 = dao.findAllPaginated(em, 1, 10);
-
-        // THEN
         assertEquals(10, page1.size());
     }
 }

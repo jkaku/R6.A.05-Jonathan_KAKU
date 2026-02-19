@@ -30,26 +30,19 @@ public class AuthResource {
     @Path("/login")
     public Response login(CredentialsDTO credentials) {
         try {
-            // JAAS LOGIN [cite: 171]
             LoginContext lc = new LoginContext("MasterAnnonceLogin", callbacks -> {
                 for (var cb : callbacks) {
                     if (cb instanceof NameCallback) ((NameCallback) cb).setName(credentials.getUsername());
                     if (cb instanceof PasswordCallback) ((PasswordCallback) cb).setPassword(credentials.getPassword().toCharArray());
                 }
             });
-
-            lc.login(); // Déclenche DbLoginModule
-
-            // Si succès, on génère le token
+            lc.login();
             User user = userRepo.findByUsername(credentials.getUsername());
             String token = tokenService.generateToken(user);
-
             logger.info("User {} logged in successfully via JAAS", credentials.getUsername());
-
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
             return Response.ok(response).build();
-
         } catch (LoginException e) {
             logger.warn("Login failed for user {}", credentials.getUsername());
             return Response.status(Response.Status.UNAUTHORIZED).entity("{\"error\": \"Bad credentials\"}").build();

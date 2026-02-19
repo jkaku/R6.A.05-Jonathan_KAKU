@@ -17,7 +17,6 @@ public class DTOMapper {
         dto.setMail(entity.getMail());
         dto.setDate(entity.getDate());
         dto.setStatus(entity.getStatus());
-
         if (entity.getAuthor() != null) {
             dto.setAuthorName(entity.getAuthor().getUsername());
         }
@@ -36,9 +35,6 @@ public class DTOMapper {
         entity.setDescription(dto.getDescription());
         entity.setAdress(dto.getAdress());
         entity.setMail(dto.getMail());
-
-        // Note: L'auteur et la catégorie doivent être récupérés via les Services/DAO
-        // Ce mapper fait une conversion simple des champs texte
         return entity;
     }
 }

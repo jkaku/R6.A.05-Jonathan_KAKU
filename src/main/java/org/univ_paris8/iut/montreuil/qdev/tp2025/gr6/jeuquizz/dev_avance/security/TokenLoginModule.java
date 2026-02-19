@@ -51,7 +51,7 @@ public class TokenLoginModule implements LoginModule {
         return true;
     }
 
-    @Override // Méthodes standards obligatoires
+    @Override
     public boolean abort() { return false; }
     @Override
     public boolean logout() {

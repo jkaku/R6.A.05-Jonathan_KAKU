@@ -41,14 +41,9 @@ public class AnnonceResource {
 
     @POST
     public Response create(AnnonceDTO dto, @Context SecurityContext securityContext) {
-        // Récupération de l'utilisateur connecté
         String username = securityContext.getUserPrincipal().getName();
-
         Annonce entity = DTOMapper.toAnnonceEntity(dto);
-
-        // C'EST ICI QUE CA BLOQUAIT : On passe l'ID de catégorie (Long)
         service.addAnnonce(entity, username, dto.getCategoryId());
-
         return Response.status(Response.Status.CREATED).entity(dto).build();
     }
 
@@ -57,9 +52,7 @@ public class AnnonceResource {
     public Response update(@PathParam("id") Long id, AnnonceDTO dto, @Context SecurityContext securityContext) {
         String username = securityContext.getUserPrincipal().getName();
         Annonce updates = DTOMapper.toAnnonceEntity(dto);
-
         service.updateAnnonce(id, updates, username);
-
         return Response.ok().entity("{\"status\": \"updated\"}").build();
     }
 
