@@ -17,7 +17,7 @@ public class ServiceLoggingAspect {
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String methodName = joinPoint.getSignature().getName();
 
-        log.info("▶️ [AOP] DÉBUT de la méthode : {}.{}", className, methodName);
+        log.info("[AOP] DÉBUT de la méthode : {}.{}", className, methodName);
         long start = System.currentTimeMillis();
 
         try {

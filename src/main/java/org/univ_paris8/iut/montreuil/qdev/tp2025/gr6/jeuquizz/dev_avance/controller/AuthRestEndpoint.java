@@ -30,13 +30,10 @@ public class AuthRestEndpoint {
         Authentication authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
-
         AppUserDetails principal = (AppUserDetails) authentication.getPrincipal();
         String role = principal.getAuthorities().iterator().next().getAuthority();
-
         String accessToken = tokenProvider.generateAccessToken(principal.getUserId(), principal.getUsername(), role);
         String refreshToken = tokenProvider.generateRefreshToken(principal.getUserId(), principal.getUsername(), role);
-
         return ResponseEntity.ok(new AuthResponse(accessToken, refreshToken, tokenProvider.getExpirationMs()));
     }
 }

@@ -26,7 +26,7 @@ import org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.securit
 import java.util.Objects;
 
 @Service
-@Transactional(readOnly = true) // Par défaut, on ne fait que lire.
+@Transactional(readOnly = true)
 public class AnnonceManagementService {
 
     private final ItemDataRepo annonceRepo;
