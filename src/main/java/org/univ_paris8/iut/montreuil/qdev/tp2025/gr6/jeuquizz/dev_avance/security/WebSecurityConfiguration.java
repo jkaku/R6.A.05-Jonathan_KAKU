@@ -40,14 +40,13 @@ public class WebSecurityConfiguration {
                         .accessDeniedHandler((req, res, accessEx) -> res.sendError(HttpServletResponse.SC_FORBIDDEN, "Accès refusé"))
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // Login public
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Swagger public
-                        .requestMatchers(HttpMethod.GET, "/api/annonces/**").permitAll() // Consultation publique
-                        .anyRequest().authenticated() // Tout le reste est bloqué
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/swagger-ui/**","/swagger-ui.html", "/v3/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/annonces/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtSecurityFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 

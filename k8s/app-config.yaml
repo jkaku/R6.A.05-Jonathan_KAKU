@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres-service:5432/postgres"
+  SPRING_PROFILES_ACTIVE: "prod"
+  MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED: "true"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secret
+type: Opaque
+stringData:
+  SPRING_DATASOURCE_USERNAME: "postgres"
+  SPRING_DATASOURCE_PASSWORD: "93Monga!"
+  API_SECURITY_JWT_SECRET: "MzRkYjU2Y2M4OWIxY2RiM2EyZGFmNWYxODkxNzI1NDRkYmFmZmE2ZmNmZGFhMjEzOGI4NmFmMTM2Mzg5NjQ5NA=="
