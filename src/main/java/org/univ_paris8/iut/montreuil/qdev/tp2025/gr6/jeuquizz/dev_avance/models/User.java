@@ -3,7 +3,8 @@ package org.univ_paris8.iut.montreuil.qdev.tp2025.gr6.jeuquizz.dev_avance.models
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import java.sql.Timestamp;
+import org.hibernate.annotations.CreationTimestamp;
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -12,20 +13,31 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(unique = true, nullable = false)
     @NotBlank(message = "Le nom d'utilisateur est obligatoire")
     private String username;
+
     @Column(unique = true, nullable = false)
     @Email(message = "Format d'email invalide")
     private String email;
+
     @NotBlank
     private String password;
-    @Column(name = "created_at")
-    private Timestamp createdAt;
+
+    // NOUVEAU : Indispensable pour la sécurité Spring / JWT
+    @Column(nullable = false, length = 32)
+    private String role = "USER";
+
+    @CreationTimestamp // Géré tout seul par Spring
+    @Column(name = "created_at", updatable = false)
+    private Instant createdAt;
+
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Annonce> annonces;
 
     public User() {}
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getUsername() { return username; }
@@ -34,8 +46,10 @@ public class User {
     public void setEmail(String email) { this.email = email; }
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
-    public Timestamp getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
+    public Instant getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
     public List<Annonce> getAnnonces() { return annonces; }
     public void setAnnonces(List<Annonce> annonces) { this.annonces = annonces; }
 }
